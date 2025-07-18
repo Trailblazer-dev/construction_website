@@ -1,0 +1,292 @@
+import type { 
+  Project, 
+  Task, 
+  Vehicle, 
+  Delivery, 
+  Document, 
+  Issue, 
+  DashboardStats,
+  Notification 
+} from '../types';
+
+// Mock Projects Data
+export const mockProjects: Project[] = [
+  {
+    id: '1',
+    name: 'Highway 101 Expansion',
+    description: 'Major highway expansion project including 3 new lanes and bridge construction',
+    status: 'active',
+    startDate: '2024-01-15',
+    endDate: '2024-12-31',
+    estimatedEndDate: '2024-12-31',
+    progress: 65,
+    budget: 15000000,
+    spent: 9750000,
+    location: 'San Francisco, CA',
+    manager: 'John Smith',
+    teamMembers: ['1', '2', '3', '4'],
+    tags: ['highway', 'bridge', 'high-priority'],
+    priority: 'high',
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-07-15T00:00:00Z',
+  },
+  {
+    id: '2',
+    name: 'Downtown Bridge Repair',
+    description: 'Structural repair and reinforcement of downtown bridge',
+    status: 'active',
+    startDate: '2024-03-01',
+    endDate: '2024-09-30',
+    estimatedEndDate: '2024-10-15',
+    progress: 40,
+    budget: 5000000,
+    spent: 2000000,
+    location: 'Downtown San Francisco',
+    manager: 'Sarah Johnson',
+    teamMembers: ['2', '5', '6'],
+    tags: ['bridge', 'repair', 'structural'],
+    priority: 'medium',
+    createdAt: '2024-02-15T00:00:00Z',
+    updatedAt: '2024-07-10T00:00:00Z',
+  },
+  {
+    id: '3',
+    name: 'Metro Station Construction',
+    description: 'New metro station with underground platforms and surface facilities',
+    status: 'planning',
+    startDate: '2024-09-01',
+    endDate: '2025-06-30',
+    estimatedEndDate: '2025-06-30',
+    progress: 5,
+    budget: 25000000,
+    spent: 1250000,
+    location: 'Mission District',
+    manager: 'John Smith',
+    teamMembers: ['1', '2', '7', '8'],
+    tags: ['metro', 'underground', 'transit'],
+    priority: 'critical',
+    createdAt: '2024-07-01T00:00:00Z',
+    updatedAt: '2024-07-18T00:00:00Z',
+  },
+];
+
+// Mock Tasks Data
+export const mockTasks: Task[] = [
+  {
+    id: '1',
+    projectId: '1',
+    title: 'Complete bridge foundation',
+    description: 'Pour concrete for the main bridge foundation',
+    status: 'in_progress',
+    priority: 'high',
+    assignedTo: '2',
+    dueDate: '2024-07-25',
+    estimatedHours: 120,
+    actualHours: 85,
+    tags: ['foundation', 'concrete'],
+    dependencies: [],
+    createdAt: '2024-07-01T00:00:00Z',
+    updatedAt: '2024-07-18T00:00:00Z',
+  },
+  {
+    id: '2',
+    projectId: '1',
+    title: 'Install steel beams',
+    description: 'Install main structural steel beams for the bridge',
+    status: 'pending',
+    priority: 'high',
+    assignedTo: '3',
+    dueDate: '2024-08-05',
+    estimatedHours: 80,
+    tags: ['steel', 'structural'],
+    dependencies: ['1'],
+    createdAt: '2024-07-01T00:00:00Z',
+    updatedAt: '2024-07-10T00:00:00Z',
+  },
+];
+
+// Mock Vehicles Data
+export const mockVehicles: Vehicle[] = [
+  {
+    id: '1',
+    type: 'dump_truck',
+    licensePlate: 'TRK-001',
+    model: 'Caterpillar 773G',
+    year: 2020,
+    status: 'in_use',
+    currentLocation: {
+      lat: 37.7749,
+      lng: -122.4194,
+      address: 'Highway 101, San Francisco, CA',
+    },
+    driverId: '3',
+    capacity: {
+      weight: 40000,
+      volume: 25,
+    },
+    maintenanceDate: '2024-08-01',
+    fuelLevel: 75,
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-07-18T00:00:00Z',
+  },
+  {
+    id: '2',
+    type: 'excavator',
+    licensePlate: 'EXC-001',
+    model: 'Caterpillar 320',
+    year: 2019,
+    status: 'available',
+    capacity: {
+      weight: 20000,
+      volume: 15,
+    },
+    maintenanceDate: '2024-07-25',
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-07-15T00:00:00Z',
+  },
+];
+
+// Mock Deliveries Data
+export const mockDeliveries: Delivery[] = [
+  {
+    id: '1',
+    projectId: '1',
+    vehicleId: '1',
+    driverId: '3',
+    status: 'in_transit',
+    scheduledDate: '2024-07-18T08:00:00Z',
+    pickupLocation: {
+      address: 'Concrete Plant, Oakland, CA',
+      lat: 37.8044,
+      lng: -122.2712,
+    },
+    deliveryLocation: {
+      address: 'Highway 101, San Francisco, CA',
+      lat: 37.7749,
+      lng: -122.4194,
+    },
+    items: [
+      {
+        id: '1',
+        name: 'Ready-mix concrete',
+        quantity: 10,
+        unit: 'cubic yards',
+        weight: 24000,
+        description: 'High-strength concrete for bridge foundation',
+      },
+    ],
+    notes: 'Handle with care, time-sensitive delivery',
+    createdAt: '2024-07-17T00:00:00Z',
+    updatedAt: '2024-07-18T00:00:00Z',
+  },
+];
+
+// Mock Documents Data
+export const mockDocuments: Document[] = [
+  {
+    id: '1',
+    projectId: '1',
+    name: 'Bridge Design Blueprints',
+    type: 'drawing',
+    url: '/documents/bridge-blueprints.pdf',
+    size: 15600000,
+    uploadedBy: '2',
+    uploadedAt: '2024-01-15T00:00:00Z',
+    version: 3,
+    tags: ['blueprint', 'structural', 'bridge'],
+    description: 'Detailed architectural drawings for the main bridge structure',
+  },
+  {
+    id: '2',
+    projectId: '1',
+    name: 'Environmental Impact Report',
+    type: 'report',
+    url: '/documents/environmental-report.pdf',
+    size: 8400000,
+    uploadedBy: '1',
+    uploadedAt: '2024-01-10T00:00:00Z',
+    version: 1,
+    tags: ['environmental', 'compliance'],
+    description: 'Environmental impact assessment and mitigation strategies',
+  },
+];
+
+// Mock Issues Data
+export const mockIssues: Issue[] = [
+  {
+    id: '1',
+    projectId: '1',
+    title: 'Concrete delivery delayed',
+    description: 'Scheduled concrete delivery is delayed by 2 hours due to traffic',
+    type: 'delay',
+    severity: 'medium',
+    status: 'in_progress',
+    reportedBy: '3',
+    assignedTo: '1',
+    createdAt: '2024-07-18T06:00:00Z',
+    attachments: [],
+  },
+  {
+    id: '2',
+    projectId: '2',
+    title: 'Safety violation reported',
+    description: 'Worker observed without proper safety equipment in the construction zone',
+    type: 'safety',
+    severity: 'high',
+    status: 'open',
+    reportedBy: '4',
+    assignedTo: '1',
+    createdAt: '2024-07-17T14:30:00Z',
+    attachments: ['photo1.jpg'],
+  },
+];
+
+// Mock Dashboard Stats
+export const mockDashboardStats: DashboardStats = {
+  totalProjects: 12,
+  activeProjects: 8,
+  completedProjects: 3,
+  delayedProjects: 2,
+  totalVehicles: 25,
+  availableVehicles: 18,
+  activeDeliveries: 6,
+  pendingTasks: 34,
+  openIssues: 8,
+  totalBudget: 75000000,
+  spentBudget: 45000000,
+  efficiency: 87,
+};
+
+// Mock Notifications
+export const mockNotifications: Notification[] = [
+  {
+    id: '1',
+    userId: '1',
+    title: 'Delivery Update',
+    message: 'Concrete delivery for Highway 101 project is in transit',
+    type: 'info',
+    read: false,
+    createdAt: '2024-07-18T08:30:00Z',
+    actionUrl: '/logistics/deliveries/1',
+  },
+  {
+    id: '2',
+    userId: '1',
+    title: 'Safety Issue Reported',
+    message: 'New safety violation reported on Downtown Bridge project',
+    type: 'warning',
+    read: false,
+    createdAt: '2024-07-18T07:15:00Z',
+    actionUrl: '/engineering/issues/2',
+  },
+  {
+    id: '3',
+    userId: '1',
+    title: 'Task Completed',
+    message: 'Steel beam installation task has been marked complete',
+    type: 'success',
+    read: true,
+    createdAt: '2024-07-17T16:45:00Z',
+    actionUrl: '/projects/1/tasks',
+  },
+];
