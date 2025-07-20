@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { Card } from '../components/UI/Card';
-import { Button } from '../components/UI/Button';
 import { 
   BarChart3, 
   FileText, 
   Download, 
   Calendar, 
-  Filter, 
   PieChart,
   TrendingUp,
   Clock,

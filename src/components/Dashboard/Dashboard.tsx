@@ -2,23 +2,18 @@ import React from 'react';
 import { 
   FolderOpen, 
   Truck, 
-  CheckCircle, 
   AlertTriangle, 
   TrendingUp,
   Calendar,
   DollarSign,
   Users,
-  ArrowRight,
-  MapPin,
   Clock,
   Activity,
   BarChart,
-  FileText
+  Shield
 } from 'lucide-react';
-import { mockDashboardStats, mockProjects, mockTasks, mockIssues, mockDeliveries } from '../../data/mockData';
-import { StatCard } from '../UI/StatCard';
+import { mockDashboardStats, mockProjects, mockTasks, mockIssues } from '../../data/mockData';
 import { EnhancedStatCard } from '../UI/EnhancedStatCard';
-import { ProjectList } from '../Projects/ProjectList';
 import { TaskList } from '../Tasks/TaskList';
 import { IssueList } from '../Issues/IssueList';
 import { Card } from '../UI/Card';
@@ -31,13 +26,12 @@ export const Dashboard: React.FC = () => {
   const recentProjects = mockProjects.slice(0, 3);
   const urgentTasks = mockTasks.filter(task => task.priority === 'high' || task.priority === 'critical').slice(0, 5);
   const recentIssues = mockIssues.slice(0, 2);
-  const activeDeliveries = mockDeliveries.filter(delivery => delivery.status === 'in_transit');
   
   // Add admin dashboard header and user count
   const totalUsers = 35; // Example value - adjust as needed based on your data
 
   return (
-    <div className="space-y-6">
+    <div className="container mx-auto px-4 py-8">
       {/* Admin Dashboard Header */}
       <div className="bg-primary-800 text-white p-6 md:p-8 rounded-xl shadow-construction relative overflow-hidden">
         {/* Construction accent line */}
@@ -178,7 +172,7 @@ export const Dashboard: React.FC = () => {
               </div>
             </div>
             
-            <div className="mt-4 pt-4 border-t border-sky-800/30">
+            <div className="mt-4 pt-4">
               <div className="flex justify-between mb-2">
                 <div className="text-sm">
                   <p className="text-white">Efficiency Rate</p>
@@ -263,3 +257,6 @@ export const Dashboard: React.FC = () => {
     </div>
   );
 };
+
+export default Dashboard;
+

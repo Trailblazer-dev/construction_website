@@ -2,8 +2,8 @@ import React from 'react';
 import { clsx } from 'clsx';
 import type { LucideProps } from 'lucide-react';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'accent' | 'success' | 'warning' | 'danger' | 'outline' | 'ghost';
-export type ButtonSize = 'sm' | 'md' | 'lg';
+export type ButtonVariant = 'primary' | 'secondary' | 'accent' | 'success' | 'warning' | 'danger' | 'outline' | 'ghost' | 'link';
+export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg';
 
 // Use a generic type for Lucide icons
 type LucideIcon = React.ComponentType<LucideProps>;
@@ -44,6 +44,7 @@ export const Button: React.FC<ButtonProps> = ({
     danger: 'bg-danger-500 text-white hover:bg-danger-600 active:bg-danger-700',
     outline: 'bg-transparent border border-earth-300 text-earth-700 hover:bg-earth-50 active:bg-earth-100',
     ghost: 'bg-transparent text-earth-600 hover:bg-earth-100 active:bg-earth-200',
+    link: 'bg-transparent text-primary-600 hover:text-primary-700 underline active:text-primary-800',
   };
 
   // Role-based styling
@@ -57,6 +58,7 @@ export const Button: React.FC<ButtonProps> = ({
 
   // Button sizes
   const sizeClasses = {
+    xs: 'py-1 px-2 text-xs',
     sm: 'py-1.5 px-3 text-sm',
     md: 'py-2 px-4 text-base',
     lg: 'py-2.5 px-5 text-lg',
@@ -88,13 +90,13 @@ export const Button: React.FC<ButtonProps> = ({
       )}
       
       {Icon && iconPosition === 'left' && !isLoading && (
-        <Icon className="w-5 h-5 mr-2" />
+        <Icon className={`${size === 'xs' ? 'w-3 h-3' : 'w-5 h-5'} mr-2`} />
       )}
       
       {children}
       
       {Icon && iconPosition === 'right' && !isLoading && (
-        <Icon className="w-5 h-5 ml-2" />
+        <Icon className={`${size === 'xs' ? 'w-3 h-3' : 'w-5 h-5'} ml-2`} />
       )}
     </button>
   );

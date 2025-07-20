@@ -1,43 +1,43 @@
-import React, { useState } from 'react';
-import type { ReactNode } from 'react';
-import { Sidebar } from './Sidebar';
+import React, { useState, useEffect } from 'react';
+import { Outlet } from 'react-router-dom';
 import { Header } from './Header';
+import { Sidebar } from './Sidebar';
 
-interface LayoutProps {
-  children: ReactNode;
-}
-
-export const Layout: React.FC<LayoutProps> = ({ children }) => {
+export const Layout: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if screen is mobile on mount and when resized
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkIfMobile(); // Initial check
+    window.addEventListener('resize', checkIfMobile);
+    
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-earth-50">
-      {/* Desktop sidebar - hidden on mobile */}
-      <div className="hidden lg:block lg:flex-shrink-0">
-        <Sidebar isOpen={true} onClose={() => {}} />
-      </div>
-      
-      {/* Mobile sidebar */}
-      <Sidebar
-        isMobile
-        isOpen={isSidebarOpen}
-        onClose={() => setIsSidebarOpen(false)}
+    <div className="min-h-screen bg-earth-50 flex flex-col">
+      <Sidebar 
+        isOpen={isSidebarOpen} 
+        onClose={() => setIsSidebarOpen(false)} 
+        isMobile={isMobile}
       />
       
-      {/* Main content area */}
-      <div className="flex flex-col flex-1 w-0 overflow-hidden">
+      <div className={`flex-1 flex flex-col ${isSidebarOpen ? 'md:ml-64' : 'md:ml-20'} transition-all duration-300`}>
         <Header toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
-        <main className="relative flex-1 overflow-y-auto focus:outline-none bg-earth-50">
-          <div className="py-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-            {children}
-          </div>
+        
+        <main className="flex-1 p-4 md:p-8">
+          <Outlet />
         </main>
       </div>
     </div>
   );
 };
-      

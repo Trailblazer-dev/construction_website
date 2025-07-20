@@ -4,7 +4,6 @@ import {
   Calendar, 
   CheckCircle2, 
   Clock, 
-  Filter, 
   ChevronLeft, 
   ChevronRight, 
   Plus,
@@ -130,7 +129,6 @@ const TasksPage: React.FC = () => {
 
   // Unique values for filters
   const projects = Array.from(new Set(tasks.map(task => task.project)));
-  const assignees = Array.from(new Set(tasks.map(task => task.assignee)));
 
   // Reset filters
   const resetFilters = () => {

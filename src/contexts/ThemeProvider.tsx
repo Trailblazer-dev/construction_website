@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
-import { ThemeContext } from './ThemeContext.context';
-import type { ThemeMode } from './ThemeContext.context';
+import { ThemeContext } from './ThemeContext';
+import type { ThemeMode, Theme } from './ThemeContext';
 
 // Design tokens
-const designTokens = {
+const designTokens: Omit<Theme, 'mode'> = {
   colors: {
     primary: {
       50: '#EFF6FF',
@@ -42,6 +42,47 @@ const designTokens = {
       800: '#1F2937',
       900: '#111827',
     },
+    // Complete color properties
+    success: {
+      50: '#ECFDF5',
+      100: '#D1FAE5',
+      200: '#A7F3D0',
+      300: '#6EE7B7',
+      400: '#34D399',
+      500: '#10B981',
+      600: '#059669',
+      700: '#047857',
+      800: '#065F46',
+      900: '#064E3B',
+    },
+    warning: {
+      50: '#FFFBEB',
+      100: '#FEF3C7',
+      200: '#FDE68A',
+      300: '#FCD34D',
+      400: '#FBBF24',
+      500: '#F59E0B',
+      600: '#D97706',
+      700: '#B45309',
+      800: '#92400E',
+      900: '#78350F',
+    },
+    danger: {
+      50: '#FEF2F2',
+      100: '#FEE2E2',
+      200: '#FECACA',
+      300: '#FCA5A5',
+      400: '#F87171',
+      500: '#EF4444',
+      600: '#DC2626',
+      700: '#B91C1C',
+      800: '#991B1B',
+      900: '#7F1D1D',
+    },
+    background: {
+      light: '#FFFFFF',
+      dark: '#121212',
+    },
   },
   spacing: {
     xs: '0.25rem',
@@ -52,9 +93,28 @@ const designTokens = {
     '2xl': '3rem',
     '3xl': '4rem',
   },
-  fonts: {
+  typography: {
     heading: 'Poppins, Montserrat, sans-serif',
     body: 'Inter, Roboto, sans-serif',
+  },
+  breakpoints: {
+    xs: '320px',
+    sm: '640px',
+    md: '768px',
+    lg: '1024px',
+    xl: '1280px',
+    '2xl': '1536px',
+  },
+  borderRadius: {
+    sm: '4px',
+    md: '8px',
+    lg: '16px',
+    full: '9999px',
+  },
+  animation: {
+    fast: '150ms',
+    normal: '300ms',
+    slow: '500ms',
   },
   shadows: {
     card: '0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06)',
@@ -72,7 +132,6 @@ interface ThemeProviderProps {
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [mode, setMode] = useState<ThemeMode>(() => {
-    // Check for saved theme preference or use browser preference
     const savedMode = localStorage.getItem('theme-mode');
     if (savedMode === 'dark' || savedMode === 'light') {
       return savedMode as ThemeMode;
@@ -97,7 +156,10 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const value = {
     mode,
     toggleMode,
-    ...designTokens,
+    theme: {
+      ...designTokens,
+      mode, // override mode dynamically
+    },
   };
 
   return (

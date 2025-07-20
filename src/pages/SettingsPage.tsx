@@ -2,14 +2,11 @@ import React, { useState } from 'react';
 import { Card } from '../components/UI/Card';
 import { Button } from '../components/UI/Button';
 import { 
-  Settings,
   PaintBucket,
   Monitor,
   Bell,
   Moon,
   Sun,
-  LayoutGrid,
-  Globe,
   Save,
   RefreshCw,
   Sliders,

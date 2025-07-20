@@ -3,10 +3,7 @@ import { Card } from '../components/UI/Card';
 import { Button } from '../components/UI/Button';
 import { 
   FileUp, 
-  FolderOpen, 
-  CheckCircle2, 
   Clock, 
-  AlertTriangle, 
   BarChart3,
   Users,
   PenTool,
@@ -15,12 +12,8 @@ import {
   FileCode,
   ExternalLink,
   Plus,
-  Filter,
-  ArrowUpRight,
-  ChevronRight,
-  ArrowRight
+  Filter
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
 const EngineerLandingPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'assigned' | 'all'>('assigned');

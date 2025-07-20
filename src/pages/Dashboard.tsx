@@ -8,7 +8,6 @@ import {
   TrendingUp, 
   TrendingDown, 
   AlertTriangle, 
-  CheckCircle2, 
   Users, 
   Truck, 
   HardHat, 

@@ -10,16 +10,10 @@ import {
   Calendar,
   MapPin,
   PackageCheck,
-  Fuel, // Changed from GasPump to Fuel which is the correct icon name
-  RotateCw,
-  Package,
-  Clipboard,
-  ArrowRight,
-  ChevronRight,
+  Fuel,
   User,
   PhoneOutgoing
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
 const DriverLandingPage: React.FC = () => {
   const [activeView, setActiveView] = useState<'today' | 'upcoming'>('today');
@@ -83,7 +77,6 @@ const DriverLandingPage: React.FC = () => {
     }
   ];
   
-  // Mock vehicle data
   const vehicleInfo = {
     id: 'TRK-2023-105',
     type: 'Heavy Duty Flatbed',
@@ -94,14 +87,12 @@ const DriverLandingPage: React.FC = () => {
     mileage: 12456
   };
   
-  // Mock contacts
   const contacts = [
     { id: 1, name: 'John Smith', role: 'Site Manager - Highway 95', phone: '(555) 123-4567' },
     { id: 2, name: 'Elena Martinez', role: 'Logistics Coordinator', phone: '(555) 987-6543' },
     { id: 3, name: 'David Wong', role: 'Site Manager - Bridge Repair', phone: '(555) 234-5678' }
   ];
   
-  // Function to update delivery status
   const updateDeliveryStatus = (id: number, status: string) => {
     setDeliveryStatus(prev => ({
       ...prev,
@@ -223,7 +214,7 @@ const DriverLandingPage: React.FC = () => {
                     <Clock className="w-4 h-4 text-sky-300 mr-2" />
                     <div>
                       <p className="text-sm text-sky-300/80">
-                        {activeView === 'today' ? delivery.time : `${delivery.date}, ${delivery.time}`}
+                        {activeView === 'today' ? delivery.time : `${(delivery as any).date}, ${delivery.time}`}
                       </p>
                       <p className="text-xs text-sky-300/60">Est. duration: {delivery.estimatedDuration}</p>
                     </div>

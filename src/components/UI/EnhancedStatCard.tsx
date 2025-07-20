@@ -1,121 +1,174 @@
 import React from 'react';
-import type { LucideProps } from 'lucide-react';
-import styles from './EnhancedStatCard.module.css';
+import type { LucideIcon } from 'lucide-react';
 
-interface EnhancedStatCardProps {
+export interface EnhancedStatCardProps {
   title: string;
   value: number | string;
-  total?: number;
-  icon?: React.ComponentType<LucideProps>;
+  icon: LucideIcon;
   trend?: string;
   trendUp?: boolean;
-  color?: 'primary' | 'secondary' | 'accent' | 'success' | 'warning' | 'danger' | 'info';
+  color?: 'primary' | 'secondary' | 'accent' | 'success' | 'warning' | 'danger';
   subtitle?: string;
+  total?: number;
+  className?: string;
   onClick?: () => void;
 }
 
 export const EnhancedStatCard: React.FC<EnhancedStatCardProps> = ({
   title,
   value,
-  total,
   icon: Icon,
   trend,
-  trendUp = true,
+  trendUp,
   color = 'primary',
   subtitle,
+  total,
+  className = '',
   onClick
 }) => {
-  // Unified color classes for consistency
-  const colorClasses = {
+  // Color schemes for different stat types
+  const colorSchemes = {
     primary: {
-      bg: 'bg-sky-300/20',
-      text: 'text-sky-300',
-      trendBg: 'bg-sky-950/40',
-      trendText: trendUp ? 'text-sky-300' : 'text-danger-400'
-    },
-    secondary: {
-      bg: 'bg-sky-300/20',
-      text: 'text-sky-300',
-      trendBg: 'bg-sky-950/40',
-      trendText: trendUp ? 'text-sky-300' : 'text-danger-400'
+      background: 'bg-primary-900/90',
+      iconBg: 'bg-primary-800',
+      iconColor: 'text-primary-300',
+      textColor: 'text-white',
+      subtitleColor: 'text-primary-300/70',
+      valueColor: 'text-white',
+      border: 'border-primary-700/50',
+      shadow: 'shadow-lg shadow-primary-900/20',
+      trendUp: 'text-success-400',
+      trendDown: 'text-danger-400',
+      progressBg: 'bg-primary-700/30',
+      progressFill: 'bg-primary-500'
     },
     accent: {
-      bg: 'bg-sky-300/20',
-      text: 'text-sky-300',
-      trendBg: 'bg-sky-950/40',
-      trendText: trendUp ? 'text-sky-300' : 'text-danger-400'
+      background: 'bg-accent-900/90',
+      iconBg: 'bg-accent-800',
+      iconColor: 'text-accent-300',
+      textColor: 'text-white',
+      subtitleColor: 'text-accent-300/70',
+      valueColor: 'text-white',
+      border: 'border-accent-700/50',
+      shadow: 'shadow-lg shadow-accent-900/20',
+      trendUp: 'text-success-400',
+      trendDown: 'text-danger-400',
+      progressBg: 'bg-accent-700/30',
+      progressFill: 'bg-accent-500'
     },
     success: {
-      bg: 'bg-sky-300/20',
-      text: 'text-sky-300',
-      trendBg: 'bg-sky-950/40',
-      trendText: 'text-sky-300'
+      background: 'bg-success-900/90',
+      iconBg: 'bg-success-800',
+      iconColor: 'text-success-300',
+      textColor: 'text-white',
+      subtitleColor: 'text-success-300/70',
+      valueColor: 'text-white',
+      border: 'border-success-700/50',
+      shadow: 'shadow-lg shadow-success-900/20',
+      trendUp: 'text-white',
+      trendDown: 'text-white/70',
+      progressBg: 'bg-success-700/30',
+      progressFill: 'bg-success-500'
     },
     warning: {
-      bg: 'bg-sky-300/20',
-      text: 'text-sky-300',
-      trendBg: 'bg-sky-950/40',
-      trendText: trendUp ? 'text-sky-300' : 'text-danger-400'
+      background: 'bg-warning-900/90',
+      iconBg: 'bg-warning-800',
+      iconColor: 'text-warning-300',
+      textColor: 'text-white',
+      subtitleColor: 'text-warning-300/70',
+      valueColor: 'text-white',
+      border: 'border-warning-700/50',
+      shadow: 'shadow-lg shadow-warning-900/20',
+      trendUp: 'text-white',
+      trendDown: 'text-white/70',
+      progressBg: 'bg-warning-700/30',
+      progressFill: 'bg-warning-500'
     },
     danger: {
-      bg: 'bg-sky-300/20',
-      text: 'text-sky-300',
-      trendBg: 'bg-sky-950/40',
-      trendText: 'text-danger-400'
+      background: 'bg-danger-900/90',
+      iconBg: 'bg-danger-800',
+      iconColor: 'text-danger-300',
+      textColor: 'text-white',
+      subtitleColor: 'text-danger-300/70',
+      valueColor: 'text-white',
+      border: 'border-danger-700/50',
+      shadow: 'shadow-lg shadow-danger-900/20',
+      trendUp: 'text-white',
+      trendDown: 'text-white/70',
+      progressBg: 'bg-danger-700/30',
+      progressFill: 'bg-danger-500'
     },
-    info: {
-      bg: 'bg-sky-300/20',
-      text: 'text-sky-300',
-      trendBg: 'bg-sky-950/40',
-      trendText: trendUp ? 'text-sky-300' : 'text-danger-400'
+    secondary: {
+      background: 'bg-gray-800/90',
+      iconBg: 'bg-gray-700',
+      iconColor: 'text-gray-300',
+      textColor: 'text-white',
+      subtitleColor: 'text-gray-300/70',
+      valueColor: 'text-white',
+      border: 'border-gray-700/50',
+      shadow: 'shadow-lg shadow-gray-900/20',
+      trendUp: 'text-success-400',
+      trendDown: 'text-danger-400',
+      progressBg: 'bg-gray-700/30',
+      progressFill: 'bg-gray-500'
     }
   };
-  
-  const classes = colorClasses[color];
-  
+
+  const styles = colorSchemes[color];
+  const percentValue = total ? Math.round((typeof value === 'number' ? value : 0) / total * 100) : null;
+
   return (
     <div 
-      className="bg-sky-950/70 rounded-xl shadow-sm p-5 hover:shadow-md transition-shadow duration-200 border border-sky-800/30"
+      className={`${styles.background} rounded-xl ${styles.border} ${styles.shadow} p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${onClick ? 'cursor-pointer' : ''} ${className}`}
       onClick={onClick}
     >
-      <div className="flex justify-between items-start">
+      <div className="flex justify-between items-start mb-4">
         <div>
-          <h3 className="text-white text-sm font-medium">{title}</h3>
-          <div className="mt-2 flex items-baseline">
-            <p className="text-2xl font-bold text-white">{value}</p>
-            {total && (
-              <span className="ml-1 text-sm text-sky-300/80">/ {total}</span>
-            )}
-          </div>
+          <h3 className={`font-medium ${styles.textColor}`}>{title}</h3>
           {subtitle && (
-            <p className="mt-1 text-xs text-sky-300/80">{subtitle}</p>
+            <p className={`text-xs ${styles.subtitleColor} mt-1`}>{subtitle}</p>
           )}
         </div>
-        
-        {Icon && (
-          <div className={`p-3 rounded-lg ${classes.bg}`}>
-            <Icon className={`w-5 h-5 ${classes.text}`} />
-          </div>
-        )}
+        <div className={`p-3 rounded-lg ${styles.iconBg}`}>
+          <Icon className={`h-5 w-5 ${styles.iconColor}`} />
+        </div>
       </div>
       
-      {trend && (
-        <div className="mt-4 flex items-center">
-          <div className={`text-xs font-medium flex items-center py-1 px-2 rounded-full ${classes.trendBg} ${classes.trendText}`}>
-            {trendUp ? (
-              <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
-              </svg>
-            ) : (
-              <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-              </svg>
+      <div className="flex items-end justify-between">
+        <div>
+          <p className={`text-2xl font-bold ${styles.valueColor}`}>
+            {value}
+            {total && (
+              <span className={`text-sm font-normal ml-1 ${styles.subtitleColor}`}>
+                / {total}
+              </span>
             )}
-            {trend}
+          </p>
+          {trend && (
+            <div className="flex items-center mt-1">
+              <span className={trendUp ? styles.trendUp : styles.trendDown}>
+                {trend}
+              </span>
+              <span className={`text-xs ml-1 ${styles.subtitleColor}`}>
+                vs last period
+              </span>
+            </div>
+          )}
+        </div>
+      </div>
+      
+      {total && percentValue !== null && (
+        <div className="mt-4">
+          <div className="flex justify-between text-xs mb-1">
+            <span className={styles.subtitleColor}>Progress</span>
+            <span className={styles.textColor}>{percentValue}%</span>
           </div>
-          <span className="ml-2 text-xs text-sky-300/60">
-            vs last month
-          </span>
+          <div className={`w-full h-1.5 ${styles.progressBg} rounded-full overflow-hidden`}>
+            <div 
+              className={`h-full ${styles.progressFill} rounded-full`}
+              style={{ width: `${percentValue}%` }}
+            ></div>
+          </div>
         </div>
       )}
     </div>

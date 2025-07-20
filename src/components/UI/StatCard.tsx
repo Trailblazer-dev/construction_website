@@ -248,7 +248,7 @@ export const StatCard: React.FC<StatCardProps> = ({
             onClick={onAction}
             className={clsx(
               "text-sm font-medium flex items-center justify-end w-full",
-              role ? styles.actionBtn : styles.headline
+              role ? styles.actionBtn : (styles as any).headline || styles.actionBtn
             )}
           >
             {actionLabel}

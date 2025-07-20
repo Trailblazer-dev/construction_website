@@ -11,7 +11,6 @@ import {
   ArrowRight,
   CheckCircle,
   Star,
-  Activity,
   Clock,
   Target,
   Award
@@ -489,14 +488,13 @@ const WelcomePage: React.FC = () => {
       </footer>
       
       {/* Add CSS for animations */}
-      <style jsx>{`
+      <style>{`
         .animate-on-scroll {
           opacity: 0;
           transform: translateY(20px);
           transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
         
-        /* Ensure content is visible before animations run */
         .initially-visible {
           opacity: 1 !important;
           transform: translateY(0) !important;
@@ -517,7 +515,6 @@ const WelcomePage: React.FC = () => {
           background: radial-gradient(circle at center, var(--tw-gradient-from), var(--tw-gradient-to));
         }
         
-        /* Debug styling */
         .debug-section {
           border: 3px dashed rgba(255, 0, 0, 0.3);
           position: relative;

@@ -1,20 +1,10 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { useState, useEffect, createContext, useContext } from 'react';
+import type { ReactNode } from 'react';
+// Remove ThemeContext and useTheme imports to avoid redeclaration
+import type { ThemeContextType } from './ThemeContext';
 
 // Simple theme implementation to get started
 type ThemeMode = 'light' | 'dark';
-
-interface ThemeContextType {
-  mode: ThemeMode;
-  toggleMode: () => void;
-  colors: {
-    primary: Record<string, string>;
-    accent: Record<string, string>;
-    earth: Record<string, string>;
-  };
-  spacing: Record<string, string>;
-  fonts: Record<string, string>;
-  shadows: Record<string, string>;
-}
 
 // Design tokens
 const designTokens = {
@@ -55,6 +45,46 @@ const designTokens = {
       800: '#1F2937',
       900: '#111827',
     },
+    success: {
+      50: '#ECFDF5',
+      100: '#D1FAE5',
+      200: '#A7F3D0',
+      300: '#6EE7B7',
+      400: '#34D399',
+      500: '#10B981',
+      600: '#059669',
+      700: '#047857',
+      800: '#065F46',
+      900: '#064E3B',
+    },
+    warning: {
+      50: '#FFFBEB',
+      100: '#FEF3C7',
+      200: '#FDE68A',
+      300: '#FCD34D',
+      400: '#FBBF24',
+      500: '#F59E0B',
+      600: '#D97706',
+      700: '#B45309',
+      800: '#92400E',
+      900: '#78350F',
+    },
+    danger: {
+      50: '#FEF2F2',
+      100: '#FEE2E2',
+      200: '#FECACA',
+      300: '#FCA5A5',
+      400: '#F87171',
+      500: '#EF4444',
+      600: '#DC2626',
+      700: '#B91C1C',
+      800: '#991B1B',
+      900: '#7F1D1D',
+    },
+    background: {
+      light: '#FFFFFF',
+      dark: '#121212',
+    },
   },
   spacing: {
     xs: '0.25rem',
@@ -89,18 +119,14 @@ export const useTheme = () => {
   }
   return context;
 };
-
 interface ThemeProviderProps {
   children: ReactNode;
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [mode, setMode] = useState<ThemeMode>(() => {
-    // Check for saved theme preference or use browser preference
-    const savedMode = localStorage.getItem('theme-mode');
-    if (savedMode === 'dark' || savedMode === 'light') {
-      return savedMode as ThemeMode;
-    }
+    const stored = localStorage.getItem('theme-mode');
+    if (stored === 'light' || stored === 'dark') return stored;
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   });
 
@@ -108,7 +134,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     // Apply theme to document
     document.documentElement.classList.remove('light', 'dark');
     document.documentElement.classList.add(mode);
-    
+
     // Save to localStorage
     localStorage.setItem('theme-mode', mode);
   }, [mode]);
@@ -118,10 +144,82 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   };
 
   // Combine values for our context
-  const value = {
+  const value: ThemeContextType = {
     mode,
     toggleMode,
-    ...designTokens,
+    theme: {
+      mode,
+      colors: {
+        primary: designTokens.colors.primary,
+        accent: designTokens.colors.accent,
+        earth: designTokens.colors.earth,
+        success: {
+          50: '#ECFDF5',
+          100: '#D1FAE5',
+          200: '#A7F3D0',
+          300: '#6EE7B7',
+          400: '#34D399',
+          500: '#10B981',
+          600: '#059669',
+          700: '#047857',
+          800: '#065F46',
+          900: '#064E3B',
+        },
+        warning: {
+          50: '#FFFBEB',
+          100: '#FEF3C7',
+          200: '#FDE68A',
+          300: '#FCD34D',
+          400: '#FBBF24',
+          500: '#F59E0B',
+          600: '#D97706',
+          700: '#B45309',
+          800: '#92400E',
+          900: '#78350F',
+        },
+        danger: {
+          50: '#FEF2F2',
+          100: '#FEE2E2',
+          200: '#FECACA',
+          300: '#FCA5A5',
+          400: '#F87171',
+          500: '#EF4444',
+          600: '#DC2626',
+          700: '#B91C1C',
+          800: '#991B1B',
+          900: '#7F1D1D',
+        },
+        background: {
+          light: '#FFFFFF',
+          dark: '#121212',
+        },
+      },
+      spacing: designTokens.spacing,
+      typography: {
+        heading: designTokens.fonts.heading,
+        body: designTokens.fonts.body
+      },
+      breakpoints: {
+        xs: '320px',
+        sm: '640px',
+        md: '768px',
+        lg: '1024px',
+        xl: '1280px',
+        '2xl': '1536px',
+      },
+      borderRadius: {
+        sm: '4px',
+        md: '8px',
+        lg: '16px',
+        full: '9999px',
+      },
+      animation: {
+        fast: '150ms',
+        normal: '300ms',
+        slow: '500ms',
+      },
+      shadows: designTokens.shadows
+    }
   };
 
   return (

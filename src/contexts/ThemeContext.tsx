@@ -1,17 +1,217 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import type { ReactNode } from 'react';
 
-type ThemeMode = 'light' | 'dark';
+// Define theme types
+export type ThemeMode = 'light' | 'dark';
 
-interface ThemeContextType {
+export interface Theme {
+  mode: ThemeMode;
+  colors: {
+    primary: ColorShades;
+    accent: ColorShades;
+    earth: ColorShades;
+    success: ColorShades;
+    warning: ColorShades;
+    danger: ColorShades;
+    background: {
+      light: string;
+      dark: string;
+    };
+  };
+  spacing: {
+    xs: string;
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+    '2xl': string;
+    '3xl': string;
+  };
+  typography: {
+    heading: string;
+    body: string;
+  };
+  breakpoints: {
+    xs: string;
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+    '2xl': string;
+  };
+  borderRadius: {
+    sm: string;
+    md: string;
+    lg: string;
+    full: string;
+  };
+  animation: {
+    fast: string;
+    normal: string;
+    slow: string;
+  };
+  shadows: Record<string, string>;
+}
+
+interface ColorShades {
+  50: string;
+  100: string;
+  200: string;
+  300: string;
+  400: string;
+  500: string;
+  600: string;
+  700: string;
+  800: string;
+  900: string;
+}
+
+export interface ThemeContextType {
   mode: ThemeMode;
   toggleMode: () => void;
-  spacing: Record<string, string>;
-  colors: Record<string, Record<string, string>>;
-  fonts: Record<string, string>;
-  shadows: Record<string, string>;
-  transitions: Record<string, string>;
-  radius: Record<string, string>;
+  theme: Theme;
 }
+
+// Create the context
+export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+
+// Custom hook for using the theme
+export const useTheme = (): ThemeContextType => {
+  const context = useContext(ThemeContext);
+  if (context === undefined) {
+    throw new Error('useTheme must be used within a ThemeProvider');
+  }
+  return context;
+};
+
+interface ThemeProviderProps {
+  children: ReactNode;
+}
+
+export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
+  const [mode, setMode] = useState<ThemeMode>(() => {
+    // Check for saved theme preference or use browser preference
+    const savedMode = localStorage.getItem('theme-mode');
+    if (savedMode === 'dark' || savedMode === 'light') {
+      return savedMode;
+    }
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  });
+
+  useEffect(() => {
+    // Apply theme to document
+    document.documentElement.classList.remove('light', 'dark');
+    document.documentElement.classList.add(mode);
+    
+    // Save to localStorage
+    localStorage.setItem('theme-mode', mode);
+    
+    // Set CSS variables
+    Object.entries(designTokens.spacing).forEach(([key, value]) => {
+      document.documentElement.style.setProperty(`--theme-spacing-${key}`, value);
+    });
+    
+    Object.entries(designTokens.radius).forEach(([key, value]) => {
+      document.documentElement.style.setProperty(`--theme-radius-${key}`, value);
+    });
+    
+    Object.entries(designTokens.transitions).forEach(([key, value]) => {
+      document.documentElement.style.setProperty(`--theme-transition-${key}`, value);
+    });
+    
+    Object.entries(designTokens.fonts).forEach(([key, value]) => {
+      document.documentElement.style.setProperty(`--theme-font-family-${key}`, value);
+    });
+  }, [mode]);
+
+  const toggleMode = () => {
+    setMode(prevMode => (prevMode === 'light' ? 'dark' : 'light'));
+  };
+
+  const value: ThemeContextType = {
+    mode,
+    toggleMode,
+    theme: {
+      mode,
+      colors: {
+        primary: designTokens.colors.primary,
+        accent: designTokens.colors.accent,
+        earth: designTokens.colors.earth,
+        success: {
+          50: '#ECFDF5',
+          100: '#D1FAE5',
+          200: '#A7F3D0',
+          300: '#6EE7B7',
+          400: '#34D399',
+          500: '#10B981',
+          600: '#059669',
+          700: '#047857',
+          800: '#065F46',
+          900: '#064E3B',
+        },
+        warning: {
+          50: '#FFFBEB',
+          100: '#FEF3C7',
+          200: '#FDE68A',
+          300: '#FCD34D',
+          400: '#FBBF24',
+          500: '#F59E0B',
+          600: '#D97706',
+          700: '#B45309',
+          800: '#92400E',
+          900: '#78350F',
+        },
+        danger: {
+          50: '#FEF2F2',
+          100: '#FEE2E2',
+          200: '#FECACA',
+          300: '#FCA5A5',
+          400: '#F87171',
+          500: '#EF4444',
+          600: '#DC2626',
+          700: '#B91C1C',
+          800: '#991B1B',
+          900: '#7F1D1D',
+        },
+        background: {
+          light: '#FFFFFF',
+          dark: '#121212',
+        },
+      },
+      spacing: designTokens.spacing,
+      typography: {
+        heading: designTokens.fonts.heading,
+        body: designTokens.fonts.body
+      },
+      breakpoints: {
+        xs: '320px',
+        sm: '640px',
+        md: '768px',
+        lg: '1024px',
+        xl: '1280px',
+        '2xl': '1536px',
+      },
+      borderRadius: {
+        sm: designTokens.radius.sm,
+        md: designTokens.radius.md,
+        lg: designTokens.radius.lg,
+        full: designTokens.radius.full,
+      },
+      animation: {
+        fast: designTokens.transitions.fast,
+        normal: designTokens.transitions.normal,
+        slow: designTokens.transitions.slow,
+      },
+      shadows: designTokens.shadows
+    }
+  };
+
+  return (
+    <ThemeContext.Provider value={value}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
 
 // Design tokens
 const designTokens = {
@@ -89,71 +289,4 @@ const designTokens = {
     '3xl': '1.5rem',
     full: '9999px',
   },
-};
-
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
-
-export const useTheme = () => {
-  const context = useContext(ThemeContext);
-  if (context === undefined) {
-    throw new Error('useTheme must be used within a ThemeProvider');
-  }
-  return context;
-};
-
-interface ThemeProviderProps {
-  children: ReactNode;
-}
-
-export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [mode, setMode] = useState<ThemeMode>(() => {
-    // Check for saved theme preference or use browser preference
-    const savedMode = localStorage.getItem('theme-mode');
-    if (savedMode === 'dark' || savedMode === 'light') {
-      return savedMode;
-    }
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  });
-
-  useEffect(() => {
-    // Apply theme to document
-    document.documentElement.classList.remove('light', 'dark');
-    document.documentElement.classList.add(mode);
-    
-    // Save to localStorage
-    localStorage.setItem('theme-mode', mode);
-    
-    // Set CSS variables
-    Object.entries(designTokens.spacing).forEach(([key, value]) => {
-      document.documentElement.style.setProperty(`--theme-spacing-${key}`, value);
-    });
-    
-    Object.entries(designTokens.radius).forEach(([key, value]) => {
-      document.documentElement.style.setProperty(`--theme-radius-${key}`, value);
-    });
-    
-    Object.entries(designTokens.transitions).forEach(([key, value]) => {
-      document.documentElement.style.setProperty(`--theme-transition-${key}`, value);
-    });
-    
-    Object.entries(designTokens.fonts).forEach(([key, value]) => {
-      document.documentElement.style.setProperty(`--theme-font-family-${key}`, value);
-    });
-  }, [mode]);
-
-  const toggleMode = () => {
-    setMode(prevMode => (prevMode === 'light' ? 'dark' : 'light'));
-  };
-
-  const value = {
-    mode,
-    toggleMode,
-    ...designTokens,
-  };
-
-  return (
-    <ThemeContext.Provider value={value}>
-      {children}
-    </ThemeContext.Provider>
-  );
 };

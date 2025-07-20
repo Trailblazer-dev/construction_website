@@ -10,7 +10,8 @@ import {
   BarChart3,
   FileText,
   AlertTriangle,
-  Calendar
+  Calendar,
+  LogOut, // Add LogOut import
 } from 'lucide-react';
 import type { UserRole } from '../../types';
 import { useAuth } from '../../contexts/AuthContext';

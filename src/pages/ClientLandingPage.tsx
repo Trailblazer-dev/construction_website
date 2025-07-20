@@ -256,7 +256,7 @@ const ClientLandingPage: React.FC = () => {
           <div className="relative">
             <div className="absolute top-0 bottom-0 left-1/2 -ml-px w-0.5 bg-sky-800/30"></div>
             <div className="space-y-6 relative">
-              {projectMilestones.map((milestone, index) => (
+              {projectMilestones.map((milestone) => (
                 <div key={milestone.id} className="flex items-start">
                   <div className={`relative flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-full ${
                     milestone.completed 

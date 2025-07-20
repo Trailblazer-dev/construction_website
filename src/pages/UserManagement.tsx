@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card } from '../components/UI/Card';
 import { Button } from '../components/UI/Button';
 import { Users, UserPlus, Shield, Settings, Search, List, Activity, Lock, Bell, Database, Key } from 'lucide-react';
@@ -36,7 +36,6 @@ interface AuditLog {
 const UserManagement: React.FC = () => {
   const [activeTab, setActiveTab] = useState('users');
   const [searchTerm, setSearchTerm] = useState('');
-  const [showUserModal, setShowUserModal] = useState(false);
   const [selectedRole, setSelectedRole] = useState<string | null>(null);
   const [userStatus, setUserStatus] = useState<string | null>(null);
   
@@ -135,11 +134,10 @@ const UserManagement: React.FC = () => {
             <Activity className="w-4 h-4 mr-2" />
             Audit Logs
           </Button>
-          <Button variant="primary" size="md" onClick={() => setShowUserModal(true)}>
+          <Button variant="primary" size="md">
             <UserPlus className="w-4 h-4 mr-2" />
             Add New User
           </Button>
-        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
@@ -232,10 +230,13 @@ const UserManagement: React.FC = () => {
                 />
               </div>
               
+              <label htmlFor="filter-role" className="sr-only">Filter by role</label>
               <select
+                id="filter-role"
                 className="p-2 text-sm border rounded-lg bg-sky-950/30 border-sky-800/50 text-white focus:ring-sky-500 focus:border-sky-500"
                 value={selectedRole || ''}
                 onChange={(e) => setSelectedRole(e.target.value || null)}
+                aria-label="Filter by role"
               >
                 <option value="">All Roles</option>
                 {roles.map(role => (
@@ -243,10 +244,13 @@ const UserManagement: React.FC = () => {
                 ))}
               </select>
               
+              <label htmlFor="filter-status" className="sr-only">Filter by status</label>
               <select
+                id="filter-status"
                 className="p-2 text-sm border rounded-lg bg-sky-950/30 border-sky-800/50 text-white focus:ring-sky-500 focus:border-sky-500"
                 value={userStatus || ''}
                 onChange={(e) => setUserStatus(e.target.value || null)}
+                aria-label="Filter by status"
               >
                 <option value="">All Status</option>
                 <option value="Active">Active</option>
@@ -693,7 +697,12 @@ const UserManagement: React.FC = () => {
                     
                     <div className="flex items-center justify-between">
                       <label className="text-sm text-white">Default Language</label>
-                      <select className="p-1 text-sm border rounded bg-sky-950/30 border-sky-800/50 text-white">
+                      <label htmlFor="default-language" className="sr-only">Default Language</label>
+                      <select
+                        id="default-language"
+                        className="p-1 text-sm border rounded bg-sky-950/30 border-sky-800/50 text-white"
+                        aria-label="Default Language"
+                      >
                         <option>English</option>
                         <option>Spanish</option>
                         <option>French</option>
@@ -702,7 +711,12 @@ const UserManagement: React.FC = () => {
                     
                     <div className="flex items-center justify-between">
                       <label className="text-sm text-white">Default Time Zone</label>
-                      <select className="p-1 text-sm border rounded bg-sky-950/30 border-sky-800/50 text-white">
+                      <label htmlFor="default-timezone" className="sr-only">Default Time Zone</label>
+                      <select
+                        id="default-timezone"
+                        className="p-1 text-sm border rounded bg-sky-950/30 border-sky-800/50 text-white"
+                        aria-label="Default Time Zone"
+                      >
                         <option>UTC-08:00 (PST)</option>
                         <option>UTC-05:00 (EST)</option>
                         <option>UTC+00:00 (GMT)</option>
@@ -750,6 +764,8 @@ const UserManagement: React.FC = () => {
                         type="checkbox" 
                         className="w-4 h-4 text-sky-600 bg-sky-950 border-sky-800 rounded focus:ring-sky-500"
                         onChange={() => {}}
+                        aria-label="SMS notifications (additional charges may apply)"
+                        title="Enable SMS notifications (additional charges may apply)"
                       />
                       <label htmlFor="sms-notifications" className="ml-2 text-sm text-white">SMS notifications (additional charges may apply)</label>
                     </div>
@@ -770,7 +786,12 @@ const UserManagement: React.FC = () => {
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <label className="text-sm text-white">Data Backup Frequency</label>
-                      <select className="p-1 text-sm border rounded bg-sky-950/30 border-sky-800/50 text-white">
+                      <label htmlFor="data-backup-frequency" className="sr-only">Data Backup Frequency</label>
+                      <select
+                        id="data-backup-frequency"
+                        className="p-1 text-sm border rounded bg-sky-950/30 border-sky-800/50 text-white"
+                        aria-label="Data Backup Frequency"
+                      >
                         <option>Daily</option>
                         <option>Weekly</option>
                         <option>Monthly</option>
@@ -816,7 +837,12 @@ const UserManagement: React.FC = () => {
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <label className="text-sm text-white">Default Project Status</label>
-                      <select className="p-1 text-sm border rounded bg-sky-950/30 border-sky-800/50 text-white">
+                      <label htmlFor="default-project-status" className="sr-only">Default Project Status</label>
+                      <select
+                        id="default-project-status"
+                        className="p-1 text-sm border rounded bg-sky-950/30 border-sky-800/50 text-white"
+                        aria-label="Default Project Status"
+                      >
                         <option>Planning</option>
                         <option>In Progress</option>
                         <option>On Hold</option>
@@ -874,8 +900,9 @@ const UserManagement: React.FC = () => {
           </Card>
         )}
       </div>
-    </div>
+        </div>
+      </div>
   );
-};
+}
 
 export default UserManagement;
