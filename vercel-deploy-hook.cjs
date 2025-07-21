@@ -40,4 +40,17 @@ if (!fs.existsSync(notFoundPath)) {
   console.log('Created 404.html file for better routing fallback');
 }
 
+// Copy vercel.json to the build directory if it doesn't exist
+const vercelJsonPath = path.join(buildDir, 'vercel.json');
+if (!fs.existsSync(vercelJsonPath)) {
+  const vercelJsonContent = {
+    "rewrites": [
+      { "source": "/(.*)", "destination": "/index.html" }
+    ]
+  };
+  
+  fs.writeFileSync(vercelJsonPath, JSON.stringify(vercelJsonContent, null, 2));
+  console.log('Created vercel.json in the build directory');
+}
+
 console.log('Vercel deployment optimizations completed');
