@@ -11,8 +11,8 @@ body {
   line-height: 1.5;
   font-weight: 400;
   color-scheme: light;
-  color: white; /* Dark Gray/Neutral for text */
-  background-color: #28697b; /* Light Gray for clean contrast */
+  color: var(--color-gray-100); /* Light text for contrast */
+  background-color: #286b7e; /* Exact deep teal/blue from logo (#286b7e) */
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

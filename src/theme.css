@@ -1,18 +1,18 @@
 :root {
-  /* Primary colors */
-  --color-primary: #8B5A2B; /* Earth brown */
-  --color-primary-light: #A67C52;
-  --color-primary-dark: #6D4522;
+  /* Primary colors - Green from logo */
+  --color-primary: #76b82a; /* Bright green from logo */
+  --color-primary-light: #8dc74a;
+  --color-primary-dark: #5a9020;
   
-  /* Secondary colors */
-  --color-secondary: #2C4C56; /* Dark blue-green */
-  --color-secondary-light: #3D6673;
-  --color-secondary-dark: #1E343B;
+  /* Secondary colors - Deep teal/blue from logo */
+  --color-secondary: #286b7e; /* Deep teal/blue from logo */
+  --color-secondary-light: #357d92;
+  --color-secondary-dark: #1c5969;
   
-  /* Accent colors */
-  --color-accent: #E67E22; /* Orange */
-  --color-accent-light: #F39C12;
-  --color-accent-dark: #D35400;
+  /* Accent colors - Yellow/gold from logo */
+  --color-accent: #f7c948; /* Yellow/gold from logo */
+  --color-accent-light: #fad56a;
+  --color-accent-dark: #e5b730;
   
   /* Neutral colors */
   --color-gray-100: #F9FAFB;

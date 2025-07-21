@@ -17,7 +17,7 @@ import {
   LogOut,
   X
 } from 'lucide-react';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../contexts/useAuth';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -142,7 +142,7 @@ const SidebarNav: React.FC<{
           {/* Category Title - only show if expanded */}
           {expanded && (
             <div 
-              className="flex items-center justify-between text-xs uppercase text-earth-300 px-3 py-2 cursor-pointer"
+              className="flex items-center justify-between text-xs uppercase text-gray-300 px-3 py-2 cursor-pointer"
               onClick={() => toggleCategory(category)}
             >
               <span>{getCategoryTitle(category)}</span>
@@ -169,10 +169,10 @@ const SidebarNav: React.FC<{
                       flex items-center px-3 py-2 text-sm rounded-lg transition-colors
                       ${active 
                         ? 'bg-primary-900/20 text-primary-300' 
-                        : 'text-earth-300 hover:bg-earth-800/40 hover:text-earth-100'}
+                        : 'text-gray-300 hover:bg-secondary-600 hover:text-gray-100'}
                     `}
                   >
-                    <IconComponent className={`h-5 w-5 ${active ? 'text-primary-300' : 'text-earth-300'}`} />
+                    <IconComponent className={`h-5 w-5 ${active ? 'text-primary-300' : 'text-gray-300'}`} />
                     {expanded && (
                       <span className="ml-3 truncate">{item.name}</span>
                     )}
@@ -225,6 +225,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, isMobile }) =
     ? 'fixed inset-0 bg-black bg-opacity-50 z-30'
     : 'hidden';
 
+  // Add handleLogout function
+  const handleLogout = () => {
+    logout();
+    if (isMobile) onClose();
+  };
+
   return (
     <>
       {/* Backdrop overlay for mobile */}
@@ -233,7 +239,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, isMobile }) =
       )}
       
       <div className={sidebarClasses}>
-        <div className="h-full flex flex-col bg-gradient-to-b from-earth-900 to-earth-950 shadow-xl">
+        <div className="h-full flex flex-col bg-gradient-to-b from-secondary-700 to-secondary-900 shadow-xl">
           <div className="flex-1 overflow-y-auto">
             {/* Sidebar header with logo */}
             <div className="px-4 py-5 flex items-center justify-between">
@@ -246,7 +252,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, isMobile }) =
               {isMobile && (
                 <button
                   onClick={onClose}
-                  className="p-2 rounded-md text-earth-300 hover:bg-earth-800 focus:outline-none"
+                  className="p-2 rounded-md text-gray-300 hover:bg-secondary-700 focus:outline-none"
                 >
                   <X className="h-5 w-5" />
                 </button>
@@ -264,7 +270,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, isMobile }) =
           </div>
           
           {/* User profile at the bottom of sidebar */}
-          <div className="p-4 border-t border-earth-700">
+          <div className="p-4 border-t border-secondary-700">
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <div className="h-9 w-9 rounded-full bg-primary-600 text-white flex items-center justify-center">
@@ -280,15 +286,15 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, isMobile }) =
                   <p className="text-sm font-medium text-white truncate">
                     {user?.name || 'User Name'}
                   </p>
-                  <p className="text-xs text-earth-300 truncate">
+                  <p className="text-xs text-gray-400 truncate">
                     {user?.role ? user.role.replace('_', ' ') : 'Role'}
                   </p>
                 </div>
               )}
               {(isOpen || isMobile) && (
                 <button
-                  onClick={logout}
-                  className="p-1 rounded-full text-earth-300 hover:bg-earth-800 focus:outline-none"
+                  onClick={handleLogout}
+                  className="p-1 rounded-full text-gray-300 hover:bg-secondary-600 focus:outline-none"
                 >
                   <LogOut className="h-4 w-4" />
                 </button>

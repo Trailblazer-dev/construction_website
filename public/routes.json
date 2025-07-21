@@ -1,0 +1,18 @@
+{
+  "routes": [
+    "/",
+    "/welcome",
+    "/login",
+    "/dashboard",
+    "/projects",
+    "/transport",
+    "/engineering",
+    "/tasks",
+    "/documents",
+    "/issues",
+    "/reports",
+    "/client-dashboard",
+    "/users",
+    "/settings"
+  ]
+}

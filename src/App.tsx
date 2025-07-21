@@ -1,50 +1,24 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
-import { ThemeProvider } from './contexts/ThemeContext';
+import { AuthProvider } from './contexts/AuthContext';
+import { useAuth } from './contexts/useAuth';
+import { ThemeProvider } from './contexts/ThemeProvider';
 import { Sidebar } from './components/Layout/Sidebar';
-import { Login } from './components/Auth/Login';
+import { Header } from './components/Layout/Header';
+import Login from './components/Auth/Login';
 import Dashboard from './pages/Dashboard';
 import ProjectManagement from './pages/ProjectManagement';
 import TransportLogistics from './pages/TransportLogistics';
 import EngineeringModule from './pages/EngineeringModule';
 import UserManagement from './pages/UserManagement';
-import TasksPage from './pages/TasksPage';
-import IssuesPage from './pages/IssuesPage';
+import WelcomePage from './pages/WelcomePage';
 import DocumentsPage from './pages/DocumentsPage';
+import IssuesPage from './pages/IssuesPage';
 import ReportsPage from './pages/ReportsPage';
+import TasksPage from './pages/TasksPage';
 import SettingsPage from './pages/SettingsPage';
 import ClientLandingPage from './pages/ClientLandingPage';
-import WelcomePage from './pages/WelcomePage';
-import EngineerLandingPage from './pages/EngineerLandingPage';
-import DriverLandingPage from './pages/DriverLandingPage';
-import { Menu } from 'lucide-react';
-
-const ProtectedRoute: React.FC<{ children: React.ReactNode; requiredRoles?: string[] }> = ({ children, requiredRoles = [] }) => {
-  const { user, isLoading } = useAuth();
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
-          <p className="mt-4 text-earth-600">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
-
-  // Add role-based access control
-  if (requiredRoles.length > 0 && !requiredRoles.includes(user.role)) {
-    return <Navigate to="/" replace />;
-  }
-
-  return <>{children}</>;
-};
+import ProtectedRoute from './components/Auth/ProtectedRoute';
 
 const AppContent: React.FC = () => {
   const { user } = useAuth();
@@ -53,27 +27,26 @@ const AppContent: React.FC = () => {
   // Modified to properly handle non-authenticated users
   const getLandingPage = () => {
     if (!user) {
-      return <WelcomePage />;
+      return <Navigate to="/welcome" replace />;
     }
     
     switch (user.role) {
       case 'engineer':
-        return <EngineerLandingPage />;
+        return <Navigate to="/engineering" replace />;
       case 'driver':
-        return <DriverLandingPage />;
+        return <Navigate to="/transport" replace />;
       case 'client':
-        return <ClientLandingPage />;
+        return <Navigate to="/client-dashboard" replace />;
       case 'admin':
-        return <UserManagement />;
       case 'construction_manager':
       default:
-        return <Dashboard />;
+        return <Navigate to="/dashboard" replace />;
     }
   };
 
   return (
     <Router>
-      <div className="flex h-screen bg-earth-50">
+      <div className="flex h-screen bg-secondary-800">
         {/* Only render the sidebar and menu toggle if user is logged in */}
         {user && (
           <>
@@ -90,23 +63,26 @@ const AppContent: React.FC = () => {
               onClose={() => setSidebarOpen(false)} 
               isMobile={true} 
             />
-            
-            {/* Mobile menu toggle */}
-            <button 
-              className="md:hidden fixed top-4 left-4 z-30 p-2 rounded-md bg-primary-600 text-white"
-              onClick={() => setSidebarOpen(true)}
-            >
-              <Menu className="h-6 w-6" />
-            </button>
           </>
         )}
         
         {/* Main content - adjust width based on whether sidebar is shown */}
-        <div className={`${user ? 'flex-1' : 'w-full'} overflow-auto`}>
-          <main className={`${user ? 'p-5 md:p-8' : ''}`}>
+        <div className={`${user ? 'flex-1' : 'w-full'} overflow-auto flex flex-col`}>
+          {/* Add Header component for authenticated users */}
+          {user && (
+            <Header 
+              toggleSidebar={() => setSidebarOpen(!sidebarOpen)} 
+              isSidebarOpen={sidebarOpen} 
+            />
+          )}
+          
+          <main className={`${user ? 'p-5 md:p-8 flex-1' : ''}`}>
             <Routes>
-              {/* Updated routes to ensure welcome page is shown for non-authenticated users */}
+              {/* Updated route to ensure landing page is shown for root path */}
               <Route path="/" element={getLandingPage()} />
+              
+              {/* Welcome page before login */}
+              <Route path="/welcome" element={<WelcomePage />} />
               
               <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
               
@@ -121,33 +97,7 @@ const AppContent: React.FC = () => {
               />
               
               <Route
-                path="/engineer"
-                element={
-                  <ProtectedRoute requiredRoles={['engineer']}>
-                    <EngineerLandingPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/driver"
-                element={
-                  <ProtectedRoute requiredRoles={['driver']}>
-                    <DriverLandingPage />
-                  </ProtectedRoute>
-                }
-              />
-              
-              <Route
-                path="/client"
-                element={
-                  <ProtectedRoute requiredRoles={['client']}>
-                    <ClientLandingPage />
-                  </ProtectedRoute>
-                }
-              />
-              
-              <Route
-                path="/projects"
+                path="/projects/*"
                 element={
                   <ProtectedRoute>
                     <ProjectManagement />
@@ -155,7 +105,7 @@ const AppContent: React.FC = () => {
                 }
               />
               <Route
-                path="/transport"
+                path="/transport/*"
                 element={
                   <ProtectedRoute>
                     <TransportLogistics />
@@ -163,18 +113,10 @@ const AppContent: React.FC = () => {
                 }
               />
               <Route
-                path="/engineering"
+                path="/engineering/*"
                 element={
                   <ProtectedRoute>
                     <EngineeringModule />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/users"
-                element={
-                  <ProtectedRoute requiredRoles={['admin']}>
-                    <UserManagement />
                   </ProtectedRoute>
                 }
               />
@@ -187,18 +129,18 @@ const AppContent: React.FC = () => {
                 }
               />
               <Route
-                path="/issues"
-                element={
-                  <ProtectedRoute>
-                    <IssuesPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
                 path="/documents"
                 element={
                   <ProtectedRoute>
                     <DocumentsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/issues"
+                element={
+                  <ProtectedRoute>
+                    <IssuesPage />
                   </ProtectedRoute>
                 }
               />
@@ -211,6 +153,22 @@ const AppContent: React.FC = () => {
                 }
               />
               <Route
+                path="/client-dashboard"
+                element={
+                  <ProtectedRoute requiredRoles={['client']}>
+                    <ClientLandingPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/users"
+                element={
+                  <ProtectedRoute requiredRoles={['admin']}>
+                    <UserManagement />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
                 path="/settings"
                 element={
                   <ProtectedRoute>
@@ -218,7 +176,9 @@ const AppContent: React.FC = () => {
                   </ProtectedRoute>
                 }
               />
-              <Route path="*" element={<Navigate to="/" replace />} />
+              
+              {/* Catch all redirect */}
+              <Route path="*" element={<Navigate to="/welcome" replace />} />
             </Routes>
           </main>
         </div>
@@ -238,3 +198,4 @@ function App() {
 }
 
 export default App;
+

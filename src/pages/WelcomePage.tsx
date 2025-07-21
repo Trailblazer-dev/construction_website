@@ -121,9 +121,9 @@ const WelcomePage: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-earth-900 to-earth-950 text-white">
+    <div className="min-h-screen bg-gradient-to-b from-secondary-600 to-secondary-800 text-white">
       {/* Header/Navigation - Enhanced with better styling */}
-      <header className="bg-primary-900/90 shadow-xl backdrop-blur-sm sticky top-0 z-50">
+      <header className="bg-secondary-700/90 shadow-xl backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center">
             <div className="h-16 mr-3">
@@ -132,11 +132,11 @@ const WelcomePage: React.FC = () => {
             <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-accent-400 to-primary-300">StratoPath</h1>
           </div>
           <div className="flex items-center space-x-4">
-            <a href="#features" className="hidden md:block text-sm font-medium text-primary-100 hover:text-white transition-colors">Features</a>
-            <a href="#benefits" className="hidden md:block text-sm font-medium text-primary-100 hover:text-white transition-colors">Benefits</a>
+            <a href="#features" className="hidden md:block text-sm font-medium text-gray-300 hover:text-white transition-colors">Features</a>
+            <a href="#benefits" className="hidden md:block text-sm font-medium text-gray-300 hover:text-white transition-colors">Benefits</a>
             <Link 
               to="/login" 
-              className="bg-accent-600 hover:bg-accent-500 px-6 py-2 rounded-lg font-medium transition-all duration-300 shadow-lg hover:shadow-accent-600/20 hover:-translate-y-0.5"
+              className="bg-primary-600 hover:bg-primary-500 px-6 py-2 rounded-lg font-medium transition-all duration-300 shadow-lg hover:shadow-primary-600/20 hover:-translate-y-0.5"
             >
               Login
             </Link>
@@ -145,7 +145,7 @@ const WelcomePage: React.FC = () => {
       </header>
 
       {/* Hero Section - Enhanced with better visuals and positioning */}
-      <section className={`relative py-20 lg:py-32 overflow-hidden bg-gradient-to-b from-primary-900 to-earth-900 ${debugMode ? 'debug-section' : ''}`}>
+      <section className={`relative py-20 lg:py-32 overflow-hidden bg-gradient-to-b from-secondary-600 to-secondary-800 ${debugMode ? 'debug-section' : ''}`}>
         {/* Abstract geometric background patterns */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-0 right-0 w-full h-full opacity-10">
@@ -158,7 +158,7 @@ const WelcomePage: React.FC = () => {
         </div>
         
         {/* Radial gradient overlay */}
-        <div className="absolute inset-0 bg-radial-gradient from-primary-800/20 to-transparent"></div>
+        <div className="absolute inset-0 bg-radial-gradient from-primary-700/20 to-transparent"></div>
         
         <div className="container mx-auto px-4 relative">
           <div className="flex flex-col lg:flex-row items-center gap-12 mb-16">
@@ -169,19 +169,19 @@ const WelcomePage: React.FC = () => {
                   Road Construction Management
                 </span>
               </h1>
-              <p className="text-xl text-primary-100 mb-8 leading-relaxed">
+              <p className="text-xl text-gray-300 mb-8 leading-relaxed">
                 Streamline your construction operations with our comprehensive project management platform. Built specifically for the unique challenges of road construction.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link 
                   to="/login" 
-                  className="bg-accent-600 hover:bg-accent-500 px-8 py-4 rounded-lg font-medium transition-all duration-300 text-lg inline-flex items-center shadow-xl hover:shadow-accent-600/30 hover:-translate-y-0.5"
+                  className="bg-primary-600 hover:bg-primary-500 px-8 py-4 rounded-lg font-medium transition-all duration-300 text-lg inline-flex items-center shadow-xl hover:shadow-primary-600/30 hover:-translate-y-0.5"
                 >
                   Get Started <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
                 <a 
                   href="#features" 
-                  className="bg-transparent border-2 border-primary-400/30 hover:border-primary-400/80 px-8 py-3.5 rounded-lg font-medium transition-all duration-300 text-lg inline-flex items-center hover:bg-primary-800/20"
+                  className="bg-transparent border-2 border-gray-400/30 hover:border-gray-400/80 px-8 py-3.5 rounded-lg font-medium transition-all duration-300 text-lg inline-flex items-center hover:bg-secondary-700/20"
                 >
                   Learn More
                 </a>
@@ -191,7 +191,7 @@ const WelcomePage: React.FC = () => {
             <div className="w-full lg:w-1/2 order-1 lg:order-2 animate-on-scroll">
               <div className="relative">
                 <div className="absolute -inset-4 bg-gradient-to-r from-accent-600/20 to-primary-600/20 rounded-3xl blur-xl opacity-70"></div>
-                <div className="relative bg-earth-800/90 p-4 rounded-2xl shadow-2xl border border-primary-500/20">
+                <div className="relative bg-charcoal-800/90 p-4 rounded-2xl shadow-2xl border border-primary-500/20">
                   <img 
                     src='./logo.jpg' 
                     alt="StratoPath Constructors Logo" 

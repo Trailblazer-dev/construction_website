@@ -39,15 +39,15 @@ export const Card: React.FC<CardProps> = ({
 }) => {
   // Standardized variants for consistent look
   const variantClasses = {
-    default: 'bg-sky-950/70 border border-sky-800/30',
-    elevated: 'bg-sky-950/70 shadow-card hover:shadow-card-hover border border-sky-800/30',
-    outline: 'bg-sky-950/70 border border-sky-300/30',
-    construction: 'bg-sky-950/70 shadow-construction border-l-4 border-sky-800/30',
+    default: 'bg-charcoal-800 border border-charcoal-700',
+    elevated: 'bg-charcoal-800 shadow-card hover:shadow-card-hover border border-charcoal-700',
+    outline: 'bg-charcoal-800 border border-charcoal-600',
+    construction: 'bg-charcoal-800 shadow-construction border-l-4 border-primary-500',
   };
 
   const colorClasses = {
-    primary: 'border-l-sky-400 text-sky-300',
-    accent: 'border-l-accent-500 text-sky-300',
+    primary: 'border-l-primary-500 text-gray-100',
+    accent: 'border-l-accent-500 text-gray-100',
     success: 'border-l-success-500 text-sky-300',
     warning: 'border-l-warning-500 text-sky-300',
     danger: 'border-l-danger-500 text-sky-300',

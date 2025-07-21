@@ -7,44 +7,44 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Primary blues
+        // Primary - Green from logo
         primary: {
-          50: '#EFF6FF',
-          100: '#DBEAFE',
-          200: '#BFDBFE',
-          300: '#93C5FD',
-          400: '#60A5FA',
-          500: '#3B82F6',
-          600: '#2563EB',
-          700: '#1D4ED8',
-          800: '#1E3A8A', // Main brand color
-          900: '#1E3A5F',
+          50: '#F3FAE7',
+          100: '#E6F5CF',
+          200: '#CEEBA0',
+          300: '#AED970',
+          400: '#92CC44',
+          500: '#76b82a', // Bright green from logo
+          600: '#5a9020', // Darker green variant
+          700: '#47721A',
+          800: '#345415',
+          900: '#273F10',
         },
-        // Secondary - Construction Orange
+        // Secondary - Deep teal/blue from logo
+        secondary: {
+          50: '#EDF6F9',
+          100: '#D0E7EE',
+          200: '#A6D3DE',
+          300: '#7CBCCE',
+          400: '#52A5BE',
+          500: '#286b7e', // Deep teal/blue from logo (#286b7e)
+          600: '#215a6b', // Darker teal/blue variant
+          700: '#1c5969',
+          800: '#153e4a',
+          900: '#0e2b34',
+        },
+        // Accent - Yellow/gold from logo
         accent: {
-          50: '#FFF7ED',
-          100: '#FFEDD5',
-          200: '#FED7AA',
-          300: '#FDBA74',
-          400: '#FB923C',
-          500: '#F97316', // Main accent
-          600: '#EA580C',
-          700: '#C2410C',
-          800: '#9A3412',
-          900: '#7C2D12',
-        },
-        // Earth tones for construction theme
-        earth: {
-          50: '#F9FAFB',
-          100: '#F3F4F6',
-          200: '#E5E7EB',
-          300: '#D1D5DB',
-          400: '#9CA3AF',
-          500: '#6B7280',
-          600: '#4B5563',
-          700: '#374151',
-          800: '#1F2937',
-          900: '#111827',
+          50: '#FEFAED',
+          100: '#FEF5DB',
+          200: '#FCEAB8',
+          300: '#FADF94',
+          400: '#F9D46F',
+          500: '#f7c948', // Yellow/gold from logo
+          600: '#e5b730', // Darker yellow/gold variant
+          700: '#C89B18',
+          800: '#9A7813',
+          900: '#735A0E',
         },
         // Additional Construction-themed colors
         asphalt: {
@@ -60,16 +60,16 @@ export default {
           900: '#0F172A',
         },
         charcoal: {
-          50: '#F8FAFC',
-          100: '#F1F5F9',
-          200: '#E2E8F0',
-          300: '#CBD5E1',
-          400: '#94A3B8',
-          500: '#64748B',
-          600: '#475569',
-          700: '#334155',
-          800: '#1E293B',
-          900: '#0F172A',
+          50: '#F5F5F5',
+          100: '#EBEBEB',
+          200: '#D6D6D6',
+          300: '#C2C2C2',
+          400: '#ADADAD',
+          500: '#999999',
+          600: '#666666',
+          700: '#444444',
+          800: '#333333',
+          900: '#222222', // Dark gray/black from logo
         },
         // Signaling colors
         success: {

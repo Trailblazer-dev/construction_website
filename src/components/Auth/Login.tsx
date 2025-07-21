@@ -1,131 +1,142 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
-import { Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import { useAuth } from '../../contexts/useAuth';
+import { useNavigate } from 'react-router-dom';
 
-export const Login: React.FC = () => {
+const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError(null);
     setIsLoading(true);
-    
+
     try {
       await login(email, password);
+      navigate('/dashboard');
     } catch (err) {
-      setError('Invalid email or password');
-    } finally {
+      setError((err as Error).message);
       setIsLoading(false);
     }
   };
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-earth-800">
-      <div className="bg-earth-700 p-8 rounded-lg shadow-lg w-full max-w-md">
-        {/* Add back to welcome page link */}
-        <div className="mb-6 flex justify-between items-center">
-          <Link 
-            to="/" 
-            className="text-sky-300 hover:text-sky-400 transition-colors flex items-center text-sm"
-          >
-            <ArrowLeft className="w-4 h-4 mr-1" />
-            Back to Welcome Page
-          </Link>
-          <div className="bg-earth-600/50 px-2 py-1 rounded text-xs text-sky-300/80">
-            Road Construction Platform
-          </div>
-        </div>
-
-        <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold text-white">Sign In</h1>
-          <p className="text-sky-300/80 mt-2">Access your account</p>
+    <div className="min-h-screen flex items-center justify-center bg-secondary-700 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        <div>
+          <img 
+            className="mx-auto h-20 w-auto rounded-md" 
+            src="/logo.jpg" 
+            alt="StratoPath Construction" 
+          />
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
+            Sign in to your account
+          </h2>
+          <p className="mt-2 text-center text-sm text-gray-300">
+            Access the construction project management platform
+          </p>
         </div>
         
-        {error && (
-          <div className="bg-danger-900/20 border border-danger-800/30 text-danger-400 px-4 py-3 rounded mb-4" role="alert">
-            {error}
-          </div>
-        )}
-        
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-sky-300/80 text-sm font-medium mb-2" htmlFor="email">
-              Email Address
-            </label>
-            <input
-              id="email"
-              type="email"
-              className="w-full p-3 bg-earth-600 border border-earth-500 rounded text-white"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          {error && (
+            <div className="rounded-md bg-red-900 p-4 border border-red-700">
+              <div className="flex">
+                <div className="ml-3">
+                  <h3 className="text-sm font-medium text-white">Login failed</h3>
+                  <div className="mt-2 text-sm text-red-200">
+                    <p>{error}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
           
-          <div className="mb-6">
-            <label className="block text-sky-300/80 text-sm font-medium mb-2" htmlFor="password">
-              Password
-            </label>
-            <div className="relative">
+          <div className="rounded-md shadow-sm -space-y-px">
+            <div>
+              <label htmlFor="email-address" className="sr-only">Email address</label>
+              <input
+                id="email-address"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-secondary-500 placeholder-gray-400 text-gray-900 bg-white rounded-t-md focus:outline-none focus:ring-accent-500 focus:border-accent-500 focus:z-10 sm:text-sm"
+                placeholder="Email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="password" className="sr-only">Password</label>
               <input
                 id="password"
-                type={showPassword ? "text" : "password"}
-                className="w-full p-3 bg-earth-600 border border-earth-500 rounded text-white pr-10"
-                placeholder="Enter your password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-secondary-500 placeholder-gray-400 text-gray-900 bg-white rounded-b-md focus:outline-none focus:ring-accent-500 focus:border-accent-500 focus:z-10 sm:text-sm"
+                placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
               />
-              <button 
-                type="button"
-                className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                onClick={togglePasswordVisibility}
-                aria-label={showPassword ? "Hide password" : "Show password"}
-              >
-                {showPassword ? (
-                  <EyeOff className="h-5 w-5 text-earth-400" />
-                ) : (
-                  <Eye className="h-5 w-5 text-earth-400" />
-                )}
-              </button>
             </div>
           </div>
-          
-          <button
-            type="submit"
-            className={`w-full bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 px-4 rounded focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50 ${
-              isLoading ? 'opacity-70 cursor-not-allowed' : ''
-            }`}
-            disabled={isLoading}
-          >
-            {isLoading ? 'Signing in...' : 'Sign In'}
-          </button>
-        </form>
-        
-        <div className="mt-6 text-center">
-          <p className="text-sm text-sky-300/60">
-            Demo Accounts:
-          </p>
-          <div className="text-xs text-sky-300/60 mt-2">
-            <p>admin@example.com / admin123 (Admin)</p>
-            <p>john@example.com / password (Construction Manager)</p>
-            <p>elena@example.com / password (Engineer)</p>
-            <p>mike@example.com / password (Driver)</p>
-            <p>client@example.com / password (Client)</p>
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <input
+                id="remember-me"
+                name="remember-me"
+                type="checkbox"
+                className="h-4 w-4 text-accent-600 focus:ring-accent-500 border-gray-300 rounded"
+              />
+              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-300">
+                Remember me
+              </label>
+            </div>
+
+            <div className="text-sm">
+              <a href="#" className="font-medium text-accent-500 hover:text-accent-400">
+                Forgot your password?
+              </a>
+            </div>
           </div>
-        </div>
+
+          <div>
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isLoading ? 'Signing in...' : 'Sign in'}
+            </button>
+          </div>
+          
+          <div className="text-sm text-center">
+            <p className="text-gray-300">
+              Demo accounts:
+              <br />
+              <span className="font-semibold">Admin:</span> admin@example.com
+              <br />
+              <span className="font-semibold">Construction Manager:</span> manager@example.com
+              <br />
+              <span className="font-semibold">Engineer:</span> engineer@example.com
+              <br />
+              <span className="font-semibold">Driver:</span> driver@example.com
+              <br />
+              <span className="font-semibold">Client:</span> client@example.com
+              <br />
+              All with password: <span className="font-semibold">password</span>
+            </p>
+          </div>
+        </form>
       </div>
     </div>
   );
 };
+
+export default Login;

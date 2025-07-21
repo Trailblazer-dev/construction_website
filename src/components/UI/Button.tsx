@@ -2,7 +2,7 @@ import React from 'react';
 import { clsx } from 'clsx';
 import type { LucideProps } from 'lucide-react';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'accent' | 'success' | 'warning' | 'danger' | 'outline' | 'ghost' | 'link';
+export type ButtonVariant = 'primary' | 'secondary' | 'accent' | 'success' | 'warning' | 'danger' | 'outline' | 'ghost' | 'link' | 'text';
 export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg';
 
 // Use a generic type for Lucide icons
@@ -17,7 +17,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   isLoading?: boolean;
   isDisabled?: boolean;
   className?: string;
-  role?: 'admin' | 'project-manager' | 'engineer' | 'driver' | 'client';
+  role?: 'admin' | 'construction_manager' | 'engineer' | 'driver' | 'client';
   children: React.ReactNode;
 }
 
@@ -36,24 +36,25 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
   // Button variants based on our design system
   const variantClasses = {
-    primary: 'bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800',
-    secondary: 'bg-earth-200 text-earth-800 hover:bg-earth-300 active:bg-earth-400',
+    primary: 'bg-primary-500 text-white hover:bg-primary-600 active:bg-primary-700',
+    secondary: 'bg-secondary-500 text-white hover:bg-secondary-600 active:bg-secondary-700',
     accent: 'bg-accent-500 text-white hover:bg-accent-600 active:bg-accent-700',
     success: 'bg-success-500 text-white hover:bg-success-600 active:bg-success-700',
     warning: 'bg-warning-500 text-white hover:bg-warning-600 active:bg-warning-700',
-    danger: 'bg-danger-500 text-white hover:bg-danger-600 active:bg-danger-700',
-    outline: 'bg-transparent border border-earth-300 text-earth-700 hover:bg-earth-50 active:bg-earth-100',
-    ghost: 'bg-transparent text-earth-600 hover:bg-earth-100 active:bg-earth-200',
-    link: 'bg-transparent text-primary-600 hover:text-primary-700 underline active:text-primary-800',
+    danger: 'bg-red-500 text-white hover:bg-red-600 active:bg-red-700',
+    outline: 'bg-transparent border border-gray-300 text-gray-700 hover:bg-gray-50 active:bg-gray-100',
+    ghost: 'bg-transparent text-gray-600 hover:bg-gray-100 active:bg-gray-200',
+    link: 'bg-transparent text-primary-500 hover:text-primary-600 underline active:text-primary-700',
+    text: 'bg-transparent text-gray-600 hover:text-gray-800 shadow-none',
   };
 
   // Role-based styling
   const roleClasses = {
-    admin: 'bg-emerald-600 text-white hover:bg-emerald-700',
-    'project-manager': 'bg-neon-500 text-charcoal-900 hover:bg-neon-600',
-    engineer: 'bg-teal-500 text-white hover:bg-teal-600',
-    driver: 'bg-accent-500 text-white hover:bg-accent-600',
-    client: 'bg-primary-600 text-white hover:bg-primary-700'
+    admin: 'bg-primary-700 text-white hover:bg-primary-800',
+    'construction_manager': 'bg-accent-500 text-white hover:bg-accent-600',
+    engineer: 'bg-secondary-600 text-white hover:bg-secondary-700',
+    driver: 'bg-accent-600 text-white hover:bg-accent-700',
+    client: 'bg-primary-500 text-white hover:bg-primary-600'
   };
 
   // Button sizes

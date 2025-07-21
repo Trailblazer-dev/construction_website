@@ -24,7 +24,7 @@ export const Layout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-earth-50 flex flex-col">
+    <div className="min-h-screen bg-secondary-700 flex flex-col">
       <Sidebar 
         isOpen={isSidebarOpen} 
         onClose={() => setIsSidebarOpen(false)} 

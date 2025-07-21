@@ -1,11 +1,13 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
+import type { UserRole } from '../types';
 
 // Define the User type including role
 interface User {
   id: number;
   name: string;
   email: string;
-  role: string;
+  role: UserRole;
+  photoURL?: string;
 }
 
 interface AuthContextType {
@@ -13,18 +15,21 @@ interface AuthContextType {
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
-  hasAnyRole: (roles: string[]) => boolean;
+  hasAnyRole: (roles: UserRole[]) => boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Export the context
+export { AuthContext };
+
 // Mock user data for development
 const mockUsers = [
-  { id: 1, name: 'Admin User', email: 'admin@example.com', password: 'admin123', role: 'admin' },
-  { id: 2, name: 'John Smith', email: 'john@example.com', password: 'password', role: 'construction_manager' },
-  { id: 3, name: 'Elena Martinez', email: 'elena@example.com', password: 'password', role: 'engineer' },
-  { id: 4, name: 'Mike Johnson', email: 'mike@example.com', password: 'password', role: 'driver' },
-  { id: 5, name: 'Sarah Wong', email: 'client@example.com', password: 'password', role: 'client' } // Ensure email is easy to remember
+  { id: 1, name: 'Admin User', email: 'admin@example.com', password: 'password', role: 'admin' },
+  { id: 2, name: 'John Smith', email: 'manager@example.com', password: 'password', role: 'construction_manager' },
+  { id: 3, name: 'Elena Martinez', email: 'engineer@example.com', password: 'password', role: 'engineer' },
+  { id: 4, name: 'Mike Johnson', email: 'driver@example.com', password: 'password', role: 'driver' },
+  { id: 5, name: 'Sarah Wong', email: 'client@example.com', password: 'password', role: 'client' }
 ];
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -68,9 +73,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.removeItem('user');
   };
 
-  const hasAnyRole = (roles: string[]) => {
+  const hasAnyRole = (roles: UserRole[]) => {
     if (!user) return false;
-    return roles.includes(user.role);
+    return roles.includes(user.role as UserRole);
   };
 
   return (
@@ -78,12 +83,4 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       {children}
     </AuthContext.Provider>
   );
-};
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
 };

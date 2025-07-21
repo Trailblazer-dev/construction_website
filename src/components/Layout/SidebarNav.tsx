@@ -11,23 +11,33 @@ import {
   FileText,
   AlertTriangle,
   Calendar,
-  LogOut, // Add LogOut import
+  LogOut,
+  type LucideIcon
 } from 'lucide-react';
 import type { UserRole } from '../../types';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../contexts/useAuth';
 import { clsx } from 'clsx';
 
-const navigationItems: Array<{
+// Define the NavigationItem type for better type safety
+interface NavigationItem {
   name: string;
   href: string;
-  icon: any;
+  icon: LucideIcon;
   roles: UserRole[];
-}> = [
+}
+
+const navigationItems: NavigationItem[] = [
   {
     name: 'Dashboard',
-    href: '/',
+    href: '/dashboard',
     icon: LayoutDashboard,
-    roles: ['admin', 'construction_manager', 'engineer', 'driver', 'client'],
+    roles: ['admin', 'construction_manager', 'engineer', 'driver'],
+  },
+  {
+    name: 'Client Dashboard',
+    href: '/client-dashboard',
+    icon: LayoutDashboard,
+    roles: ['client'],
   },
   {
     name: 'Projects',
@@ -36,8 +46,8 @@ const navigationItems: Array<{
     roles: ['admin', 'construction_manager', 'engineer', 'client'],
   },
   {
-    name: 'Logistics',
-    href: '/logistics',
+    name: 'Transport & Logistics',
+    href: '/transport',
     icon: Truck,
     roles: ['admin', 'construction_manager', 'driver'],
   },
@@ -86,26 +96,33 @@ const navigationItems: Array<{
 ];
 
 export const SidebarNav: React.FC = () => {
-  const { user, hasAnyRole } = useAuth();
+  const { user, hasAnyRole, logout } = useAuth();
   const location = useLocation();
 
-  const filteredNavigation = navigationItems.filter(item => 
-    user && hasAnyRole(item.roles)
+  // Filter navigation items based on user role
+  const filteredNavigation = React.useMemo(() => 
+    navigationItems.filter(item => 
+      user && hasAnyRole(item.roles)
+    ), [user, hasAnyRole]
   );
 
+  const handleLogout = () => {
+    logout();
+  };
+
   return (
-    <div className="h-full flex flex-col bg-white border-r border-earth-200">
+    <div className="h-full flex flex-col bg-charcoal-800 border-r border-charcoal-900">
       {/* Logo */}
-      <div className="flex items-center flex-shrink-0 px-4 py-5 bg-primary-800 text-white">
+      <div className="flex items-center flex-shrink-0 px-4 py-5 bg-charcoal-900 text-white">
         <div className="flex items-center">
-          <div className="w-10 h-10 bg-accent-500 rounded-lg flex items-center justify-center shadow-lg">
+          <div className="w-10 h-10 bg-primary-500 rounded-lg flex items-center justify-center shadow-lg">
             <Truck className="w-6 h-6 text-white" />
           </div>
           <div className="ml-3">
             <h1 className="text-xl font-heading font-bold text-white">
               StratoPath
             </h1>
-            <p className="text-sm text-primary-200 italic">Paving Tomorrow</p>
+            <p className="text-sm text-gray-300 italic">Paving Tomorrow</p>
           </div>
         </div>
       </div>
@@ -124,15 +141,15 @@ export const SidebarNav: React.FC = () => {
                 className={clsx(
                   "group flex items-center px-3 py-2.5 text-sm font-medium rounded-lg",
                   isActive 
-                    ? "bg-gradient-to-r from-primary-50 to-primary-100 text-primary-800 shadow-sm" 
-                    : "text-earth-700 hover:bg-earth-100 hover:text-earth-900",
+                    ? "bg-gradient-to-r from-primary-600 to-primary-700 text-white shadow-sm" 
+                    : "text-gray-300 hover:bg-charcoal-700 hover:text-white",
                   "transition-all duration-200"
                 )}
                 aria-current={isActive ? 'page' : undefined}
               >
                 <div className={clsx(
                   "flex items-center justify-center h-8 w-8 rounded-md mr-3",
-                  isActive ? "bg-primary-200 text-primary-700" : "bg-earth-100 text-earth-500 group-hover:bg-earth-200 group-hover:text-earth-700",
+                  isActive ? "bg-primary-500 text-white" : "bg-charcoal-700 text-gray-300 group-hover:bg-charcoal-600 group-hover:text-white",
                   "transition-colors duration-200"
                 )}>
                   <Icon className="h-4.5 w-4.5" />
@@ -146,24 +163,24 @@ export const SidebarNav: React.FC = () => {
 
       {/* User Info */}
       {user && (
-        <div className="flex-shrink-0 p-4 border-t border-earth-200 bg-earth-50">
+        <div className="flex-shrink-0 p-4 border-t border-charcoal-700 bg-charcoal-900">
           <div className="flex items-center">
-            <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
-              <span className="text-primary-700 font-medium text-sm">
+            <div className="w-10 h-10 bg-primary-500 rounded-full flex items-center justify-center">
+              <span className="text-white font-medium text-sm">
                 {user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
               </span>
             </div>
             <div className="ml-3 flex-1 min-w-0">
-              <p className="text-sm font-medium text-earth-900 truncate">
+              <p className="text-sm font-medium text-white truncate">
                 {user.name}
               </p>
-              <p className="text-xs text-earth-500 capitalize">
+              <p className="text-xs text-gray-300 capitalize">
                 {user.role.replace('_', ' ')}
               </p>
             </div>
             <button 
-              className="p-1.5 rounded-lg text-earth-500 hover:text-danger-600 hover:bg-danger-50 transition-colors"
-              onClick={() => {}} // Connect to logout function
+              className="p-1.5 rounded-lg text-gray-300 hover:text-accent-500 hover:bg-charcoal-800 transition-colors"
+              onClick={handleLogout}
               aria-label="Log out"
             >
               <LogOut className="h-4 w-4" />
